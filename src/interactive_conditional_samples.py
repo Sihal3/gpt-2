@@ -5,23 +5,26 @@ import json
 import os
 import numpy as np
 import tensorflow as tf
+config = tf.ConfigProto()
+config.gpu_options.allow_growth=True
+sess = tf.Session(config=config)
 
 import model, sample, encoder
 
 def interact_model(
-    model_name='124M',
+    model_name='1558M',
     seed=None,
     nsamples=1,
     batch_size=1,
     length=None,
     temperature=1,
-    top_k=0,
+    top_k=40,
     top_p=1,
     models_dir='models',
 ):
     """
     Interactively run the model
-    :model_name=124M : String, which model to use
+    :model_name=1.5B : String, which model to use
     :seed=None : Integer seed for random number generators, fix seed to reproduce
      results
     :nsamples=1 : Number of samples to return total
@@ -32,7 +35,7 @@ def interact_model(
      distribution. Lower temperature results in less random completions. As the
      temperature approaches zero, the model will become deterministic and
      repetitive. Higher temperature results in more random completions.
-    :top_k=0 : Integer value controlling diversity. 1 means only 1 word is
+    :top_k=40 : Integer value controlling diversity. 1 means only 1 word is
      considered for each step (token), resulting in deterministic completions,
      while 40 means 40 words are considered at each step. 0 (default) is a
      special setting meaning no restrictions. 40 generally is a good value.
